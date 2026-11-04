@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LUMÉ · Moda mujer</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#161614">
+<style>
+:root{--bg:#f5f2ec;--soft:#ebe5d9;--ink:#161614;--mut:#7a746a;--acc:#b4553a;--line:#ddd5c6;--wa:#1faa59;--ease:cubic-bezier(.2,.8,.2,1)}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}button{cursor:pointer}
+header{position:fixed;inset:0 0 auto;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:18px 32px;color:#fff;background:linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,0));transition:background .35s,padding .35s}
+header.solid{background:rgba(22,22,20,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding-block:12px}
+.logo{font-weight:700;letter-spacing:.35em;text-decoration:none;color:inherit;display:block}
+.logo img{height:30px;width:auto;display:block}
+nav{display:flex;gap:28px;font-size:13px;letter-spacing:.08em;text-transform:uppercase}nav a{color:inherit;text-decoration:none}
+.cart-btn{background:none;border:0;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:inherit}
+.cart-btn span{display:inline-grid;place-items:center;min-width:20px;height:20px;border:1px solid currentColor;border-radius:50%;font-size:11px;margin-left:4px}
+/* HERO */
+.hero{position:relative;height:100svh;min-height:580px;overflow:hidden;color:#fff;background:var(--ink);display:flex;align-items:center;padding-top:70px}
+.slides{position:absolute;top:0;right:0;bottom:0;left:30%;overflow:hidden}
+.slides::after{content:"";position:absolute;inset:0 auto 0 0;width:55%;background:linear-gradient(90deg,var(--ink) 0,rgba(22,22,20,.88) 35%,rgba(22,22,20,0) 100%)}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s var(--ease)}
+.slide.on{opacity:1}
+.slide .bg{position:absolute;inset:0;background-size:cover;background-position:85% center;transform:scale(1.12);transition:transform 7s linear}
+.slide.on .bg{transform:scale(1)}
+.hero-txt{position:relative;z-index:2;padding:0 32px 0 48px;max-width:min(600px,50%)}
+.eyebrow{font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--acc)}
+.hero .eyebrow{color:#f3d9cf}
+.hero h1{font-size:clamp(34px,5.2vw,76px);font-weight:300;letter-spacing:-.03em;line-height:1;margin:14px 0 28px}
+.hero-txt>*{animation:up .9s var(--ease) both}.hero-txt h1{animation-delay:.1s}.hero-txt .btn{animation-delay:.2s}
+@keyframes up{from{opacity:0;transform:translateY(24px)}}
+.btn{display:inline-block;padding:15px 30px;border:1px solid #fff;color:#fff;background:transparent;text-decoration:none;font-size:13px;letter-spacing:.12em;text-transform:uppercase;transition:.3s var(--ease)}
+.btn:hover{background:#fff;color:var(--ink)}
+.btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}.btn.dark:hover{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.wa{width:100%;background:var(--wa);border-color:var(--wa);color:#fff}
+.dots{position:absolute;z-index:3;right:32px;bottom:48px;display:flex;gap:10px}
+.dots button{width:44px;height:2px;border:0;background:rgba(255,255,255,.35);position:relative;overflow:hidden}
+.dots button i{position:absolute;inset:0;background:#fff;transform:scaleX(0);transform-origin:left}
+.dots button.on i{animation:prog 5s linear forwards}@keyframes prog{to{transform:scaleX(1)}}
+/* CATALOGO */
+.sec{max-width:1200px;margin:auto;padding:90px 32px 120px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+.sec h2{font-size:clamp(32px,5vw,56px);font-weight:300;letter-spacing:-.03em}
+#q{border:0;border-bottom:1px solid var(--ink);background:none;padding:8px 2px;min-width:220px;outline:none}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:34px}
+.chip{padding:9px 18px;border:1px solid #cfccc5;background:#fff;border-radius:99px;font-size:13px;transition:.25s}
+.chip.on,.chip:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:28px 20px}
+.card{cursor:pointer;opacity:0;transform:translateY(30px);transition:opacity .7s var(--ease),transform .45s var(--ease),box-shadow .45s var(--ease),border-color .3s;background:#fff;border:1px solid #d4d1ca;padding:10px 10px 14px;position:relative;-webkit-tap-highlight-color:transparent}
+.card.in{opacity:1;transform:none}
+.c-img{aspect-ratio:2/3;position:relative;overflow:hidden;display:grid;place-items:center;font-size:56px}
+.c-img .fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.card:hover .fill{transform:scale(1.06)}
+.c-img em{position:absolute;left:12px;top:12px;background:var(--ink);color:#fff;font-style:normal;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;z-index:1}
+.c-img .view{position:absolute;inset:auto 0 0;padding:14px;text-align:center;background:var(--ink);color:#fff;font-size:12px;letter-spacing:.14em;text-transform:uppercase;transform:translateY(100%);transition:transform .4s var(--ease);z-index:1}
+.card:hover .view{transform:none}
+.c-info{display:flex;justify-content:space-between;gap:10px;padding-top:12px;font-size:14px}.c-info span{color:var(--mut)}
+.c-info b{font-weight:500}
+/* MODAL */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(22,22,20,.55);backdrop-filter:blur(8px);display:grid;place-items:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .4s}
+.modal.open{opacity:1;pointer-events:auto}
+.sheet{position:relative;width:min(880px,100%);max-height:92vh;overflow:auto;background:var(--bg);display:grid;grid-template-columns:.85fr 1fr;transform:translateY(40px) scale(.96);transition:transform .55s var(--ease)}
+.modal.open .sheet{transform:none}
+.m-img{position:relative;aspect-ratio:2/3;overflow:hidden;display:grid;place-items:center;font-size:110px}
+.m-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+@media(max-height:760px) and (min-width:761px){.sheet{width:min(760px,100%)}}
+.m-info{padding:48px 40px;display:flex;flex-direction:column;gap:14px}
+.m-info h3{font-size:34px;font-weight:300;letter-spacing:-.02em}
+.m-price{font-size:26px}.m-price s{font-size:15px;color:var(--mut);margin-left:8px}
+.m-desc{color:var(--mut);line-height:1.6;font-size:14px}
+.lbl{font-size:12px;letter-spacing:.2em;text-transform:uppercase;margin-top:6px}
+.sizes{display:flex;gap:8px}.sizes button{min-width:48px;height:48px;padding:0 14px;border:1px solid var(--line);background:none;transition:.2s}
+.sizes button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.m-actions{display:flex;gap:12px;margin-top:10px}.m-actions .btn{flex:1}
+.qty{display:flex;align-items:center;border:1px solid var(--line)}.qty button{width:40px;height:100%;background:none;border:0}.qty span{width:28px;text-align:center}
+.link{background:none;border:0;text-align:left;font-size:13px;color:var(--acc);padding:6px 0}
+.close{position:absolute;top:14px;right:16px;z-index:2;width:38px;height:38px;border-radius:50%;border:0;background:var(--bg)}
+@media(max-width:900px){.hero-txt{max-width:56%;padding-left:32px}.slides{left:22%}}
+@media(max-width:760px){
+header{padding:14px 20px}nav{display:none}header.solid{padding-block:10px}
+.logo img{height:26px}
+.hero{display:block;height:auto;min-height:100svh;padding-top:calc(60svh - 40px)}
+.slides{left:0;bottom:auto;height:60svh}
+.slides::after{inset:auto 0 0 0;width:auto;height:45%;background:linear-gradient(0deg,var(--ink),rgba(22,22,20,0))}
+.slide .bg{background-position:center 15%}
+.hero-txt{max-width:none;padding:0 20px 90px}
+.hero h1{font-size:clamp(32px,9.5vw,46px);margin:10px 0 22px}
+.dots{left:20px;right:auto;bottom:40px}.dots button{width:36px}
+.sec{padding:60px 20px 70px}.sec.tiles-sec{padding:0 20px 80px}
+.sec-head{flex-direction:column;align-items:stretch}#q{width:100%;min-width:0}
+.chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-20px;padding-inline:20px}.chips::-webkit-scrollbar{display:none}.chip{flex:none}
+.grid{grid-template-columns:repeat(2,1fr);gap:22px 12px}.c-info{flex-direction:column;gap:4px;font-size:13px}.c-img{font-size:44px}
+.modal{align-items:end;padding:0}.sheet{width:100%;max-height:94vh;grid-template-columns:1fr}
+.m-img{aspect-ratio:3/4;max-height:58svh}.m-info{padding:24px 20px}.m-info h3{font-size:28px}.m-actions{flex-direction:column}.qty{align-self:flex-start;height:46px}
+.promo{padding:48px 20px;gap:24px}.cd div{width:62px}
+.drawer{padding:22px 18px}
+}
+@media(hover:none){.c-img .view{display:none}}
+/* CARRITO */
+.drawer-bg{position:fixed;inset:0;z-index:60;background:rgba(22,22,20,.45);opacity:0;pointer-events:none;transition:.35s}
+.drawer-bg.open{opacity:1;pointer-events:auto}
+.drawer{position:absolute;right:0;top:0;bottom:0;width:min(420px,100%);background:var(--bg);padding:28px;display:flex;flex-direction:column;gap:12px;overflow:auto;transform:translateX(100%);transition:transform .5s var(--ease)}
+.drawer-bg.open .drawer{transform:none}.drawer h3{font-weight:300;font-size:28px}
+.row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}.row span:first-child{flex:1}
+.row button{width:26px;height:26px;border:1px solid var(--line);background:none}
+.total{font-size:18px;margin:6px 0}
+.drawer input,.drawer textarea{border:1px solid var(--line);background:none;padding:12px;width:100%;outline:none}
+.sec.tiles-sec{padding-bottom:70px}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tile{border:0;background:var(--soft);aspect-ratio:4/5;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;gap:4px;padding:20px;text-align:left;position:relative;overflow:hidden;transition:transform .5s var(--ease)}
+.tile span{position:absolute;top:18px;right:20px;font-size:64px;transition:transform .6s var(--ease)}
+.tile:hover{transform:translateY(-6px)}.tile:hover span{transform:scale(1.2) rotate(-8deg)}
+.tile b{font-size:22px;font-weight:400}.tile small{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--acc)}
+.promo{background:var(--ink);color:var(--bg);padding:64px 32px;display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;text-align:center}
+.promo h2{font-size:clamp(30px,5vw,52px);font-weight:300;letter-spacing:-.03em;margin:8px 0}
+.promo p{color:#cfc8bb}.promo p b{color:#fff;border-bottom:1px dashed var(--acc)}
+.promo .eyebrow{color:#e58a6f}
+.cd{display:flex;gap:12px}.cd div{width:70px;padding:12px 0;border:1px solid #4a463f}.cd b{display:block;font-size:26px;font-weight:300}.cd small{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#a79f90}
+.promo .btn{border-color:var(--bg);color:var(--bg)}.promo .btn:hover{background:var(--acc);border-color:var(--acc);color:#fff}
+.wa-float{position:fixed;right:20px;bottom:20px;z-index:40;width:58px;height:58px;border-radius:50%;background:var(--wa);display:grid;place-items:center;box-shadow:0 8px 24px rgba(31,170,89,.45);transition:transform .3s var(--ease)}
+.wa-float:hover{transform:scale(1.08)}
+.wa-float::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--wa);animation:ping 2s ease-out infinite;z-index:-1}
+@keyframes ping{to{transform:scale(1.7);opacity:0}}
+@media(max-width:760px){.tiles{grid-template-columns:repeat(2,1fr)}.promo{gap:24px;padding:48px 20px}.wa-float{right:14px;bottom:14px}}
+.sec.tiles-sec{padding:0 32px 110px}
+.foot{background:var(--ink);color:#cfc8bb;padding:70px 32px 0}
+.foot-in{max-width:1200px;margin:auto;display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:48px;padding-bottom:50px}
+.f-brand img{height:34px;width:auto;display:block;margin-bottom:18px}
+.f-brand p{max-width:340px;line-height:1.6;font-size:14px;color:#a79f90}
+.f-col{display:flex;flex-direction:column;gap:12px;font-size:14px}
+.f-col h4{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#fff;font-weight:500;margin-bottom:6px}
+.foot a{color:#cfc8bb;text-decoration:none;transition:color .25s}.foot a:hover{color:#e58a6f}
+.f-bottom{max-width:1200px;margin:auto;border-top:1px solid #34312c;padding:22px 0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px;color:#8d8576}
+.f-bottom b{color:#fff;font-weight:500}
+@media(max-width:760px){.foot-in{grid-template-columns:1fr;gap:32px}.foot{padding:50px 20px 0}.f-bottom{flex-direction:column}}
+/* catalogo sobre fondo gris + efectos de tarjeta */
+:root{--g:#e7e5e0}
+#catalogo{background:var(--g);box-shadow:0 0 0 100vmax var(--g);clip-path:inset(0 -100vmax)}
+.card.in:hover{transform:translateY(-8px);box-shadow:0 24px 40px -20px rgba(22,22,20,.4);border-color:var(--ink)}
+.card.in:active{transform:translateY(-2px) scale(.985)}
+.card:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.card.sel,.card.sel:hover{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc),0 24px 40px -20px rgba(180,85,58,.5)}
+.c-img::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.4) 50%,transparent 60%);transform:translateX(-100%);transition:transform .9s var(--ease);pointer-events:none}
+.card:hover .c-img::after{transform:translateX(100%)}
+.c-info{padding:14px 4px 0}.c-info b:last-child{white-space:nowrap}
+@media(max-width:760px){.card{padding:8px 8px 12px}.c-info{padding:12px 2px 0}}
+.tile .timg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.tile:hover .timg{transform:scale(1.07)}
+.tile.has::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(22,22,20,.78),rgba(22,22,20,0) 58%);pointer-events:none}
+.tile.has span{display:none}.tile.has b,.tile.has small{position:relative;z-index:1;color:#fff}.tile.has small{color:#f3d9cf}
+/* MARCAS + BANNER */
+.brands{background:#fff;border-top:1px solid var(--line);padding:70px 0 64px;text-align:center}
+.b-title{font-size:13px;letter-spacing:.35em;text-transform:uppercase;color:var(--mut);margin-bottom:38px}
+.b-wrap{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.b-track{display:flex;align-items:center;width:max-content;will-change:transform}
+.bl{display:flex;align-items:center;padding:0 clamp(28px,5vw,64px);color:#a39c8f;transition:color .3s,transform .3s var(--ease)}
+.bl:hover{color:var(--ink);transform:scale(1.1)}
+.bl svg{display:block;height:30px;width:auto}
+.banner{position:relative;min-height:clamp(340px,42vw,560px);display:flex;align-items:flex-end;overflow:hidden;isolation:isolate;background:linear-gradient(120deg,#d9cdbd,#b9a58f 55%,#8d7461)}
+.ban-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1.6s var(--ease)}
+.banner:hover .ban-img{transform:scale(1.04)}
+.banner::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(22,22,20,.5),rgba(22,22,20,0) 58%)}
+.ban-txt{width:100%;padding:0 max(32px,calc((100% - 1136px)/2)) 52px}
+.ban-txt .eyebrow{color:#f3d9cf}
+.banner h2{color:#fff;font-size:clamp(34px,6vw,72px);font-weight:300;letter-spacing:-.03em;line-height:1;margin:10px 0 24px}
+@media(max-width:760px){.brands{padding:54px 0 50px}.banner{min-height:360px}.ban-txt{padding:0 20px 38px}}
+/* LUME CLUB + RESEÑAS */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.rv.in{opacity:1;transform:none}
+.club{max-width:1200px;margin:auto;padding:100px 32px;display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
+.cw{perspective:1300px}
+.cc{--rx:0deg;--ry:0deg;position:relative;width:100%;max-width:540px;aspect-ratio:1.6/1;cursor:pointer;transform:rotateX(var(--rx)) rotateY(var(--ry));transform-style:preserve-3d;transition:transform .25s ease-out;outline:none}
+.ci{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .9s var(--ease)}
+.ci.flip{transform:rotateY(180deg)}
+.cf{position:absolute;inset:0;border-radius:26px;padding:28px 30px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 34px 60px -28px rgba(22,22,20,.7)}
+.cf.front{background:radial-gradient(120% 120% at 100% 0,#b4553a 0,rgba(180,85,58,0) 55%),linear-gradient(135deg,#1b1a18,#35261f)}
+.cf.back{background:radial-gradient(120% 120% at 0 100%,#b4553a 0,rgba(180,85,58,0) 60%),linear-gradient(135deg,#2a211d,#171614);transform:rotateY(180deg)}
+.cf::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.12) 50%,transparent 65%);pointer-events:none}
+.cf-top,.cf-bot{display:flex;justify-content:space-between;align-items:center;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#e9d9cf;position:relative;z-index:1}
+.cf-mid{position:relative;z-index:1}.cf-mid img{height:44px;width:auto;display:block}
+.chip-ic{width:42px;height:30px;border-radius:7px;background:linear-gradient(135deg,#e7c987,#b58a3c);display:block}
+.cf-bot b{font-size:20px;color:#e58a6f}
+.num{font-size:clamp(20px,3.2vw,30px);letter-spacing:.16em;font-weight:300}.sm{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#cdb9ac;margin-top:18px}
+.code{font-size:clamp(26px,4vw,40px);font-weight:600;letter-spacing:.12em;margin-top:4px;color:#fff}
+.club-txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.club-txt h2{font-size:clamp(32px,5vw,54px);font-weight:300;letter-spacing:-.03em;line-height:1.05}
+.club-sub{color:var(--mut);font-size:17px;line-height:1.5;margin-bottom:8px}
+.perk{display:flex;gap:14px;align-items:center;width:100%;background:#fff;border:1px solid var(--line);padding:16px 20px;font-weight:500;transition:transform .4s var(--ease),box-shadow .4s var(--ease),opacity .8s var(--ease)}
+.perk:hover{transform:translateX(8px);box-shadow:0 14px 30px -18px rgba(22,22,20,.4)}.perk span{font-size:20px}
+.club-txt .btn{margin-top:10px}
+.rev-sec{background:var(--soft);padding:90px 32px}.rev-in{max-width:1200px;margin:auto}
+.rev-in h2{font-size:clamp(30px,5vw,48px);font-weight:300;letter-spacing:-.03em}
+.revs{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.rev{background:#fff;border:1px solid var(--line);padding:30px;display:flex;flex-direction:column;gap:16px;transition:transform .4s var(--ease),box-shadow .4s var(--ease),opacity .8s var(--ease)}
+.rev:hover{transform:translateY(-6px);box-shadow:0 24px 40px -24px rgba(22,22,20,.4)}
+.stars{color:#d99a2b;letter-spacing:.2em;font-size:15px}.rev p{line-height:1.6;font-size:15px}
+.who{margin-top:auto;display:flex;flex-direction:column;gap:2px;font-size:14px}.who span{color:var(--mut);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+@media(max-width:900px){.club{grid-template-columns:1fr;gap:40px;padding:70px 20px}.cc{margin:auto}}
+@media(max-width:760px){.rev-sec{padding:60px 0 60px 20px}.rev-in .sec-head{padding-right:20px}
+.revs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;padding-right:20px;scrollbar-width:none}.revs::-webkit-scrollbar{display:none}.rev{flex:0 0 82%;scroll-snap-align:start}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.card,.rv{opacity:1;transform:none}}
+
+</style>
+</head>
+<body>
+<header id="top">
+  <a class="logo" href="#"><img src="logo.png" alt="LUMÉ"></a>
+  <nav><a href="#catalogo">Catálogo</a><a href="#catalogo" data-f="Nuevo">Novedades</a></nav>
+  <button class="cart-btn" id="cartBtn">Carrito <span id="cartN">0</span></button>
+</header>
+
+<section class="hero" id="hero">
+  <div class="slides" id="slides"></div>
+  <div class="hero-txt">
+    <p class="eyebrow" id="hEye"></p>
+    <h1 id="hTit"></h1>
+    <a class="btn" id="hBtn" href="#catalogo">Ver colección</a>
+  </div>
+  <div class="dots" id="dots"></div>
+</section>
+
+<section class="brands" id="marcas">
+  <p class="b-title rv">Nuestras marcas</p>
+  <div class="b-wrap"><div class="b-track" id="bt">
+      <span class="bl" title="Zara"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Zara"><path d="M8.562 7l.002.006 2.794 7.621v-7.23h-1.15v-.07h3.96c1.903 0 3.231.976 3.231 2.375 0 1.02-.91 1.868-2.263 2.109l-.249.031.25.026c.821.094 1.473.346 1.935.75l.003.003L19.141 7h.07l.002.006 3.556 9.698H24v.07h-3.918v-.07h1.154l-1.17-3.189h-2.373v.002l.013.037c.094.281.142.576.139.873v1.196c0 .615.271 1.238.79 1.238.304 0 .547-.107.837-.372l.041.038c-.314.332-.695.473-1.266.473-.43 0-.8-.104-1.096-.308l-.056-.04c-.39-.296-.644-.778-.753-1.435l-.018-.106-.018-.16-.002-.028-.654 1.78h.928v.07h-1.942v-.07h.938l.718-1.954v-.005a6.35 6.35 0 01-.013-.346v-.854c0-1.049-.78-1.65-2.14-1.65h-1.337v4.81h1.158v.07H9.433v-.07h1.154l-1.17-3.189H6.172l-1.158 3.154.048-.008c1.521-.262 2.22-1.423 2.23-2.645h.07v2.758H0l5.465-9.377H3.268c-1.822 0-2.646 1.407-2.659 2.81H.54v-2.88h6.634l-.04.07-5.425 9.307h2.854c.071 0 .141-.003.212-.009l.072-.006.09-.01L8.491 7h.07zm9.883 2.095l-1.313 3.576.007.007.067.066c.193.197.347.43.452.684l.007.017h2.375l-1.595-4.35zm-10.648 0l-1.599 4.35h3.194l-1.595-4.35zm6.026-1.698h-1.02v4.427h1.336c1.353 0 1.767-.493 1.767-2.107 0-1.517-.72-2.32-2.083-2.32z"/></svg></span>
+      <span class="bl" title="H&amp;M"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="H&amp;M"><path d="M16.866 4.565c.871-.429 1.303-.372 1.313.061.012.565-.071 1.313-.131 1.857-.323 2.947-.864 5.356-.906 8.383 1.424-3.686 2.619-6.248 4.156-9.403.488-1.004.799-.818 1.2-.996 1.563-.695 1.622-.268 1.417.581-.758 3.15-2.695 13.068-2.992 14.595-.086.442-.566.255-.691.082-.556-.769-1.183-.781-1.112-1.293.348-2.546 1.603-8.934 1.93-10.439-1.669 3.42-3.398 7.694-4.286 10.118-.189.515-.531.477-.745.1-.3-.529-.883-.799-.979-1.424-.306-1.987.348-5.776.439-8.172-.908 2.618-2.433 7.701-3.101 9.997-.276.95-1.193.795-.949-.131 1.015-3.854 3.201-10.67 4.148-13.121.222-.576.805-.556 1.289-.795Zm-5.535-.474c.276.067.254.393.085.838-.499 1.314-1.19 3.04-1.981 5.076.497-.057.767-.076.767-.076.713-.088.846.269.645.648-.16.303-.353.101-1.02 1.096-.376.561-.99.709-1.332.784-.821 2.175-1.702 4.602-2.557 7.188-.125.377-.489.295-.598.142-.402-.562-.698-.58-1.01-1.034-.037-.074-.11-.173-.066-.354.229-.936.837-2.859 1.762-5.392-1.165.253-2.426.524-2.947.645-.624 1.651-1.234 3.308-1.811 4.944-.358 1.015-1.29.819-.963-.141.521-1.528 1.096-3.115 1.673-4.654-.646-.069-.864-.525-1.225-.906-.139-.147-.443-.126-.592-.332-.267-.371-.241-.536.377-.714.806-.233 1.617-.449 2.432-.649 1.044-2.694 1.987-5.006 2.49-6.239.388-.951 1.387-.862 1.008.075-.772 1.906-1.563 3.885-2.344 5.893.963-.217 1.931-.409 2.904-.576.713-1.831 1.462-3.648 2.247-5.449.055-.126.215-.304.381-.332.525-.09 1.379-.552 1.675-.481ZM9.543 16.426c.082-.05.163-.111.244-.178-.062-.183-.123-.366-.183-.55-.061.078-.12.157-.179.237-.349.479-.142.65.118.491Zm.465-2.275c.433-.489-.423-.693-.226.054.011.042.025.092.04.146.063-.065.125-.132.186-.2Zm.45 1.473c.429-.372.838-.003.414.624a6.955 6.955 0 0 1-.307.424c.045.128.091.255.14.381.219.562-.357.703-.542.237a7.29 7.29 0 0 1-.05-.129c-.35.31-.754.505-1.186.37-.711-.221-.892-1.222-.228-1.993.266-.309.466-.524.634-.695-.041-.133-.081-.267-.118-.401-.087-.312-.164-.675.148-1.046.586-.695 1.945-.078 1.257.992-.165.258-.359.501-.561.748.07.221.14.441.212.661.061-.06.123-.117.187-.173Z"/></svg></span>
+      <span class="bl" title="Nike"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Nike"><path d="M24 7.8L6.442 15.276c-1.456.616-2.679.925-3.668.925-1.12 0-1.933-.392-2.437-1.177-.317-.504-.41-1.143-.28-1.918.13-.775.476-1.6 1.036-2.478.467-.71 1.232-1.643 2.297-2.8a6.122 6.122 0 00-.784 1.848c-.28 1.195-.028 2.072.756 2.632.373.261.886.392 1.54.392.522 0 1.11-.084 1.764-.252L24 7.8z"/></svg></span>
+      <span class="bl" title="Adidas"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Adidas"><path d="m24 19.535-8.697-15.07-4.659 2.687 7.145 12.383Zm-8.287 0L9.969 9.59 5.31 12.277l4.192 7.258ZM4.658 14.723l2.776 4.812H1.223L0 17.41Z"/></svg></span>
+      <span class="bl" title="Puma"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Puma"><path d="M23.845 3.008c-.417-.533-1.146-.106-1.467.08-2.284 1.346-2.621 3.716-3.417 5.077-.626 1.09-1.652 1.89-2.58 1.952-.686.049-1.43-.084-2.168-.405-1.807-.781-2.78-1.792-3.017-1.97-.487-.37-4.23-4.015-7.28-4.164 0 0-.372-.75-.465-.763-.222-.025-.45.451-.616.501-.15.053-.413-.512-.565-.487-.153.02-.302.586-.6.877-.22.213-.486.2-.637.463-.052.096-.034.265-.093.42-.127.32-.551.354-.555.697 0 .381.357.454.669.72.248.212.265.362.554.461.258.088.632-.187.964-.088.277.081.543.14.602.423.054.256 0 .658-.34.613-.112-.015-.598-.174-1.198-.11-.725.077-1.553.309-1.634 1.11-.041.447.514.97 1.055.866.371-.071.196-.506.399-.716.267-.27 1.772.944 3.172.944.593 0 1.031-.15 1.467-.605.04-.029.093-.102.155-.11a.632.632 0 01.195.088c1.131.897 1.984 2.7 6.13 2.721.582.007 1.25.279 1.796.777.48.433.764 1.125 1.037 1.825.418 1.053 1.161 2.069 2.292 3.203.06.068.99.78 1.06.833.012.01.084.167.053.255-.02.69-.123 2.67 1.365 2.753.366.02.275-.231.275-.41-.005-.341-.065-.685.113-1.04.253-.478-.526-.709-.509-1.756.019-.784-.645-.651-.984-1.25-.19-.343-.368-.532-.35-.946.073-2.38-.517-3.948-.805-4.327-.227-.294-.423-.403-.207-.54 1.24-.815 1.525-1.574 1.525-1.574.66-1.541 1.256-2.945 2.075-3.57.166-.12.589-.44.852-.56.763-.362 1.173-.578 1.388-.788.356-.337.635-1.053.294-1.48z"/></svg></span>
+      <span class="bl" title="Pandora"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Pandora"><path d="M1.882 0v24H8.32a1.085 1.085 0 001.085-1.085v-4.61h1.612c7.88 0 11.103-4.442 11.103-9.636C22.119 2.257 17.247 0 12.662 0H1.882Z"/></svg></span>
+      <span class="bl" title="Uniqlo"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Uniqlo"><path d="M0 0v24h24V0H0zm3.006 3.236h1.52v5.051a1.007 1.007 0 1 0 2.014 0v-5.05h1.517v5.056a2.525 2.525 0 1 1-5.051 0V3.236zm7.07 0h1.514l2.023 4.328V3.236h1.516v7.575h-1.516L11.59 6.482v4.329h-1.514V3.236zm7.569.01h1.488v7.576h-1.488V3.246zM5.533 13.078a2.526 2.526 0 0 1 2.524 2.53v2.523a2.51 2.51 0 0 1-.75 1.793l.75 2.248H6.539l-.518-1.563a2.472 2.472 0 0 1-.488.043 2.524 2.524 0 0 1-2.527-2.521v-2.524a2.527 2.527 0 0 1 2.527-2.529zm4.547 0h1.514v6.057h3.535v1.517H10.08v-7.574zm8.336 0a2.526 2.526 0 0 1 2.523 2.53v2.523a2.525 2.525 0 0 1-2.523 2.521 2.53 2.53 0 0 1-2.531-2.521v-2.524a2.533 2.533 0 0 1 2.531-2.529zm-12.88 1.52a1.007 1.007 0 0 0-1.01 1.01v2.523c0 .552.45 1.006 1.01 1.006.558 0 1.003-.454 1.003-1.006v-2.524c0-.559-.445-1.01-1.004-1.01zm12.88 0a1.01 1.01 0 0 0-1.012 1.01v2.523c0 .552.453 1.006 1.012 1.006a1.012 1.012 0 0 0 1.01-1.006v-2.524c0-.559-.455-1.01-1.01-1.01z"/></svg></span>
+      <span class="bl" title="New Balance"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="New Balance"><path d="M12.169 10.306l1.111-1.937 3.774-.242.132-.236-3.488-.242.82-1.414h6.47c1.99 0 3.46.715 2.887 2.8-.17.638-.979 2.233-3.356 2.899.507.06 1.76.616 1.54 2.057-.384 2.558-3.69 3.774-5.533 3.774l-7.641.006-.38-1.48 4.005-.28.137-.237-4.346-.264-.467-1.755 6.178-.363.137-.231-11.096-.693.534-.925 11.948-.775.138-.231-3.504-.231m5 .385l1.1-.006c.738-.005 1.502-.34 1.783-1.018.259-.632-.088-1.171-.55-1.166h-1.067l-1.266 2.19zm-1.27 2.195l-1.326 2.305h1.265c.589 0 1.64-.292 1.964-1.128.302-.781-.253-1.177-.638-1.177h-1.266zM6.26 16.445l-.77 1.315L0 17.77l.534-.923 5.726-.402zm.385-10.216l4.417.006.336 1.248-5.276-.33.523-.924zm5 2.245l.484 1.832-7.542-.495.528-.92 6.53-.417zm-3.84 5.281l-.957 1.661-5.32-.302.534-.924 5.743-.435z"/></svg></span>
+      <span class="bl" title="Reebok"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Reebok"><path d="M14.991 11.48C17.744 10.38 19.458 9.748 24 8.64c-2.467.163-7.922.537-11.682 1.271l2.673 1.57m-8.56 3.651h3.6c.713-1.08 1.422-1.606 2.248-2.191a71.382 71.382 0 00-1.892-.701c-2.297 1.014-3.575 2.375-3.953 2.892m.709-3.928c-3.21 1.147-4.994 2.393-6.199 3.928h3.975c.387-.539 1.862-2.093 4.633-3.174a57.092 57.092 0 00-2.41-.754M8.79 8.788H0c8.862 1.6 13.133 3.66 20 6.572-.587-.439-10.051-6.013-11.209-6.572"/></svg></span>
+      <span class="bl" title="Fila"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Fila"><path d="M8.814 8.027c-.614 0-1.113.498-1.113 1.113v5.72a1.113 1.113 0 0 0 2.226 0V9.14c0-.614-.498-1.113-1.113-1.113m-2.849.078H1.113a1.113 1.113 0 0 0 0 2.226h4.852a1.113 1.113 0 0 0 0-2.226m17.411 4.417L21.03 8.705c-.275-.444-.65-.658-1.125-.658-.488 0-.904.229-1.162.658l-2.715 4.5c-.186.308-.4.436-.753.436h-2.019a.275.275 0 0 1-.285-.284V9.102c0-.613-.497-1.075-1.11-1.075-.614 0-1.11.463-1.11 1.076v5.215c0 .784.774 1.544 1.544 1.544h4.064c.576 0 .963-.42 1.292-.996l2.114-3.627c.018-.04.053-.091.093-.091.043 0 .07.051.091.088l1.384 2.22c.058.094.069.141.032.225-.033.077-.108.093-.23.093h-1.943a1.044 1.044 0 1 0 0 2.088h3.17c.77 0 1.638-.734 1.638-1.693 0-.608-.117-.822-.624-1.647M5.431 10.954H1.113c-.615 0-1.113.498-1.113 1.113v2.715a1.113 1.113 0 1 0 2.226 0v-1.268c0-.185.15-.334.334-.334h2.87a1.113 1.113 0 0 0 0-2.226"/></svg></span>
+      <span class="bl" title="Under Armour"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Under Armour"><path d="M15.954 12c-.089.066-.195.142-.324.233-.826.585-2.023.985-3.58.985h-.104c-1.556 0-2.755-.4-3.58-.985A36.43 36.43 0 018.042 12c.09-.067.196-.143.324-.234.825-.584 2.024-.985 3.58-.985h.104c1.557 0 2.756.401 3.58.985.129.09.235.167.325.234M24 7.181s-.709-.541-2.95-1.365c-1.968-.721-3.452-.883-3.452-.883l.006 4.243c0 .598-.162 1.143-.618 1.765-1.672-.61-3.254-.985-4.981-.985-1.728 0-3.308.375-4.98.985-.457-.619-.62-1.168-.62-1.765l.007-4.243s-1.494.16-3.463.883C.709 6.642 0 7.181 0 7.181c.093 1.926 1.78 3.638 4.435 4.82C1.777 13.18.09 14.887 0 16.818c0 0 .709.54 2.949 1.365 1.968.721 3.453.883 3.453.883l-.007-4.244c0-.597.164-1.143.619-1.764 1.672.61 3.252.983 4.98.983 1.727 0 3.309-.374 4.98-.983.457.62.62 1.167.62 1.764l-.006 4.244s1.484-.16 3.452-.883c2.241-.826 2.95-1.365 2.95-1.365-.093-1.927-1.78-3.64-4.435-4.819 2.657-1.182 4.343-2.888 4.435-4.82"/></svg></span>
+      <span class="bl" title="Jordan"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Jordan"><path d="M13.55 2.194v-.075c0-.35.113-.663.338-.938.225-.275.512-.412.862-.412s.663.112.938.337.425.525.45.9c.025.375-.088.688-.338.938s-.55.375-.9.375l-.225.075.075.112-.075.413-.15 1.2c.05.05.075.1.075.15l-.15.75c-.05.1-.1.175-.15.225l-.075.3a22.59 22.59 0 01-.45 1.575v.15c-.05.25-.087.45-.112.6-.025.15-.113.4-.263.75-.1.2-.1.525 0 .975l.075.075c0 .15.063.325.188.525s.187.375.187.525c.05 1-.025 1.85-.225 2.55l.15.45c.6.3.775.625.525.975l.375.15c.6.3 1.025.562 1.275.787.25.225.5.463.75.713.2.05.35.125.45.225l.225.075c1.05.7 2.1 1.55 3.15 2.55l.3.225v.075l-.075.15.225.15h.075c.15.1.25.15.3.15h.075c.05 0 .1-.025.15-.075l.15-.075c.1-.1.2-.175.3-.225h.3c.05 0 .05.025 0 .075l-.3.15-.375.45h.525l.525.075c.15-.05.275-.1.375-.15l.375-.225c.15-.05.3 0 .45.15h.075c.05.05.025.125-.075.225l-.9.825c-.25.2-.475.325-.675.375l-.975.675c-.05.05-.1.05-.15 0l-.225-.3-.15-.3-.188-.263-.225-.3-.187-.225-.15-.187-.3-.225c-.1 0-.2-.025-.3-.075l-.975-.75c-.15 0-.325-.075-.525-.225-.75-.65-1.25-1.05-1.5-1.2l-.45-.3-.9-.15c-.3-.05-.7-.2-1.2-.45l-.6-.3c-.4-.2-.675-.3-.825-.3l-.3-.15c-.2-.05-.35-.1-.45-.15l-.15-.15c-.1 0-.2.025-.3.075l-1.5.75-1.875.825c-.5.4-.975.725-1.425.975l-.825.375-1.275.9c-.1.1-.2.1-.3 0l-.15.15c-.15.05-.25.075-.3.075l-.3.15v.15H3.2l-.15.225c-.1.2-.2.312-.3.337-.1.025-.162.063-.187.113a.434.434 0 01-.075.112l-.15.15-.225.15-.338-.037-.45.075-.3.075c-.25.05-.45.012-.6-.113-.15-.125-.275-.312-.375-.562-.1-.15-.05-.275.15-.375l.075-.075c.05-.05.125-.075.225-.075h.45l.6-.225.3-.075c0-.1.025-.175.075-.225.05-.05.125-.075.225-.075v-.075a.666.666 0 01-.075-.3c-.05-.1-.063-.175-.037-.225.025-.05.05-.075.075-.075h.037l.075.225c.05.25.125.325.225.225l.075-.15c.05-.1.125-.15.225-.15l.15.15.15-.15-.075-.075c0-.05.025-.075.075-.075l.3-.3c.25-.3.55-.575.9-.825.7-.55 1.45-.975 2.25-1.275.25-.25.525-.375.825-.375.2-.35.5-.725.9-1.125.35-.25.6-.425.75-.525.1-.2.225-.3.375-.3h.075l.15-.15c.1-.05.175-.1.225-.15v-.375c0-.25.025-.45.075-.6.05-.15.175-.225.375-.225l.3-.3c-.1-.2-.15-.425-.15-.675h-.075c-.1-.15-.15-.3-.15-.45-.15-.25-.25-.45-.3-.6H9.65c-.05.15-.175.25-.375.3l-.075.15c-.2.35-.375.612-.525.787-.15.175-.425.388-.825.638-.25.25-.425.525-.525.825-.05.15-.05.3 0 .45l-.075.15h.075c0 .1.025.15.075.15h.075c.1.05.15.112.15.187s-.075.1-.225.075a.606.606 0 01-.337-.15c-.075-.075-.138-.112-.188-.112l-.225.225c-.1.15-.2.212-.3.187-.1-.025-.125-.062-.075-.112l.075-.075c.05-.1.05-.15 0-.15l-.6.15c-.05.05-.112.05-.187 0s-.063-.1.037-.15l.375-.15c0-.05-.025-.075-.075-.075-.2.1-.4.125-.6.075l-.375-.075-.075-.075c0-.05.025-.075.075-.075.2.05.45.025.75-.075l.525-.225.6-.675.075-.15c.2-.4.413-.763.638-1.088a3.68 3.68 0 01.712-.787l.075-.3c.1-.2.2-.375.3-.525.1-.15.225-.35.375-.6l.225-.3c.2-.3.425-.45.675-.45l.225-.225c.05-.05.075-.125.075-.225l.15-.15-.075-.075c-.3-.25-.45-.475-.45-.675-.05-.35.063-.65.338-.9s.55-.363.825-.338c.275.025.487.113.637.263l.15.15c.05 0 .075.025.075.075l.3.15v.225c.1.1.15.175.15.225.1-.15.25-.325.45-.525l.375-1.2c0-.2.05-.4.15-.6l.15-.225v-.15l.225-.9h.15l.225-.9a.933.933 0 000-.525l-.3-.75-.15-.6z"/></svg></span>
+      <span class="bl" title="The North Face"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="The North Face"><path d="M15.816 6.36v3.36h.228a4.847 4.847 0 0 1 4.764 4.764v3.036H24v-3.132c0-4.428-3.6-8.028-8.028-8.028H15.9Zm-9.06.012v.6h1.008V9.72h.696V6.972h1.008v-.6zm2.964 0V9.72h.696v-1.5h1.308v1.5h.696V6.372h-.696v1.272h-1.308V6.372Zm3 0V9.72h2.4v-.588h-1.752v-.876h1.548v-.588h-1.548V6.96h1.752v-.588ZM4.644 10.14c-.444 0-1.608.192-1.608 1.752s1.164 1.752 1.608 1.752c.444 0 1.608-.192 1.608-1.752S5.088 10.14 4.644 10.14zM0 10.236v3.336h.648v-2.376H.66l1.368 2.376h.696v-3.336h-.648v2.316h-.012L.732 10.236Zm6.54 0 .012 3.336h.684v-1.308h.72c.516 0 .54.18.54.636 0 .348.024.516.072.672h.768v-.084c-.144-.048-.144-.168-.144-.66 0-.624-.144-.732-.42-.852.324-.108.516-.42.516-.792 0-.288-.168-.948-1.056-.948zm2.916 0v.588h1.02v2.748h.696v-2.748h1.008v-.588zm2.976 0v3.336h.696v-1.5h1.296v1.5h.696v-3.336h-.696v1.26h-1.296v-1.26zm3.372 0v3.348h.156c1.08 0 1.944.876 1.944 1.944v1.992h2.388v-2.988c-.012-2.316-1.86-4.2-4.152-4.296h-.252Zm-11.16.504c.372 0 .9.228.9 1.164 0 .936-.528 1.164-.9 1.164s-.912-.228-.912-1.164c0-.936.54-1.164.912-1.164zm2.58.072h.864c.408 0 .492.252.492.432 0 .324-.18.456-.54.456h-.816Zm3.684 3.204c-.876 0-1.572.612-1.572 1.812 0 1.188.648 1.8 1.56 1.8.864 0 1.344-.516 1.488-1.26h-.72c-.084.42-.36.648-.756.648-.612 0-.852-.552-.852-1.164 0-.972.504-1.2.852-1.2.588 0 .696.384.756.588v-.012h.72c-.036-.504-.456-1.212-1.476-1.212zm-6.696.084v3.432h.708v-1.44h1.512v-.612H4.92v-.768h1.728V14.1Zm3.228 0-1.224 3.432h.756l.228-.708h1.284l.216.708h.78L8.268 14.1Zm5.232 0v3.432h2.46v-.612h-1.8v-.888h1.596v-.6h-1.596v-.72h1.8V14.1Zm3.144.012v3.432h1.596v-1.992c0-.792-.648-1.44-1.44-1.44zm-7.98.768h.012l.42 1.356h-.876Zm-4.92.912a.927.927 0 0 0-.936.924c0 .528.432.924.936.924a.917.917 0 0 0 .924-.924.917.917 0 0 0-.924-.924zm0 .144c.42 0 .756.336.756.78 0 .456-.324.792-.756.792s-.768-.348-.768-.792c0-.444.336-.78.768-.78zm-.36.24v1.092h.168V16.8h.18l.3.468h.18l-.312-.48c.168-.024.288-.108.288-.3 0-.216-.132-.312-.384-.312zm.168.132h.228c.12 0 .24.024.24.168 0 .168-.144.18-.288.18h-.18z"/></svg></span>
+      <span class="bl" title="Dior"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Dior"><path d="M.0728 8.7751h3.1157c2.6789 0 3.7272 1.5724 3.7272 3.237 0 1.6937-1.3443 3.203-3.9019 3.203H.0776c-.0534 0-.0728-.034-.0728-.0631 0-.034.034-.0631.0825-.0631h.5484c.1699 0 .2815-.1019.2815-.2912V9.2022c0-.1407-.0679-.296-.2912-.296H.0679C.0243 8.9062 0 8.8771 0 8.8431c0-.0291.0097-.068.0728-.068m1.9461 6.1392c0 .1407.0631.1844.1553.1844h.825c2.0334 0 2.7711-1.5578 2.7711-3.1205S4.9889 8.9013 3.271 8.9013H2.1499c-.1165 0-.1262.0971-.1262.1407l-.0048 5.8723zm5.2073-6.1392c-.0485 0-.0922.0194-.0922.0582s.0243.0631.0679.0631h.5484c.1262 0 .2475.0874.2475.33v5.5762c0 .1165-.0874.2912-.2427.2912h-.5434c-.0631 0-.0679.0485-.0679.0679s-.0049.0534.0679.0534h2.6401c.0388 0 .0922-.0049.0922-.0437s-.0097-.0776-.0776-.0776h-.5097c-.0728 0-.2718-.0437-.2718-.2669V9.1682c0-.1602.1019-.2669.2863-.2669h.4999c.0437 0 .0679-.0243.0679-.0582 0-.034-.0243-.0631-.0825-.0631-.0005-.0048-2.6396.0092-2.6303-.0049zm4.1251 3.2225c0-1.7811.7959-3.2224 2.2906-3.2224 1.4656 0 2.2906 1.4414 2.2906 3.2224S15.1804 15.22 13.642 15.22c-1.4899.0049-2.2907-1.4414-2.2907-3.2224m2.2907 3.3583c2.1256 0 3.4651-1.5044 3.4651-3.3535s-1.3249-3.3583-3.4651-3.3583c-2.1353 0-3.4651 1.5044-3.4651 3.3535s1.3831 3.3583 3.4651 3.3583m10.2593-.1796c-.8347.0874-1.2958-1.2812-1.718-1.9315-.3154-.4805-.9852-.9706-1.6452-1.0677 1.0871-.0631 2.3052-.4125 2.3052-1.6452 0-.9997-.6163-1.7568-2.8779-1.7568h-2.6061c-.034 0-.0679.0194-.0679.0582s.034.0631.0679.0631h.5969c.1262 0 .2475.0874.2475.33v5.5762c0 .1165-.0874.2912-.2427.2912h-.587c-.0485 0-.0679.0388-.0679.0582s.0194.0631.0679.0631h2.7662c.0388 0 .0728-.0194.0728-.0582s-.0243-.0631-.0776-.0631h-.5581c-.0728 0-.2718-.0485-.2718-.2669v-2.6352h.2863c1.3686 0 1.4705 1.485 2.1499 2.3343.5824.728 1.3443.8202 1.7762.8202.1844 0 .3106-.0049.4271-.034.0728-.0243.0874-.1504-.0437-.1359m-4.3192-6.2798h.4028c.6891 0 1.8053.2718 1.8053 1.5724 0 1.1939-.99 1.5967-1.9073 1.5967h-.5872V9.1682c.0001-.165.102-.2717.2864-.2717"/></svg></span>
+      <span class="bl" title="Hermès"><svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Hermès"><path d="m21.818 4.516-1.05 4.148h2.175L24 4.516M19.41 14.04h2.17l1.04-4.08h-2.178m-2.41 9.523h2.154l1.056-4.147h-2.16m.193-5.377H5.55v.92l3.341 3.161h9.349m2.41-9.525H0v1.116l3.206 3.032H19.6m-8.372 7.58 3.43 3.24h2.205l1.05-4.147h-6.685"/></svg></span>
+  </div></div>
+</section>
+
+<section class="promo" id="ofertas">
+  <div><p class="eyebrow">Oferta por tiempo limitado</p><h2>20% OFF en accesorios</h2><p>Menciona el código <b>LUME20</b> al pedir por WhatsApp</p></div>
+  <div class="cd" id="cd"></div>
+  <a class="btn" id="promoBtn" href="#catalogo">Aprovechar oferta</a>
+</section>
+
+<section class="sec" id="catalogo">
+  <div class="sec-head"><h2>Catálogo</h2><input id="q" placeholder="Buscar prenda"></div>
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="grid"></div>
+</section>
+<section class="sec tiles-sec" id="look">
+  <div class="sec-head"><h2>Completa tu look</h2></div>
+  <div class="tiles">
+    <button class="tile" data-c="Pulseras" data-img="pulseras"><span>📿</span><b>Pulseras</b><small>Ver colección</small></button>
+    <button class="tile" data-c="Relojes" data-img="relojes"><span>⌚</span><b>Relojes</b><small>Ver colección</small></button>
+    <button class="tile" data-c="Aretes" data-img="aretes"><span>💎</span><b>Aretes</b><small>Ver colección</small></button>
+    <button class="tile" data-c="Accesorios" data-img="carteras"><span>👜</span><b>Carteras</b><small>Ver colección</small></button>
+  </div>
+</section>
+<section class="club" id="club">
+  <div class="cw rv"><div class="cc" id="cc" tabindex="0" role="button" aria-label="Tarjeta LUMÉ Club, toca para girar">
+    <div class="ci" id="ci">
+      <div class="cf front">
+        <div class="cf-top"><span>Member Card</span><i class="chip-ic"></i></div>
+        <div class="cf-mid"><img src="logo.png" alt="LUMÉ"></div>
+        <div class="cf-bot"><span>Toca para girar</span><b>✦</b></div>
+      </div>
+      <div class="cf back">
+        <div class="cf-top"><span>LUMÉ Club</span><b>✦</b></div>
+        <div class="cf-mid"><p class="num">•••• •••• 2026</p><p class="sm">Tu código de miembro</p><p class="code">LUME20</p></div>
+        <div class="cf-bot"><span>Muéstrala o menciónala al pedir por WhatsApp</span></div>
+      </div>
+    </div>
+  </div></div>
+  <div class="club-txt">
+    <p class="eyebrow rv">LUMÉ Club</p>
+    <h2 class="rv">Cada compra te acerca a un regalo</h2>
+    <p class="club-sub rv">Únete gratis y acumula puntos en cada pedido para canjearlos por prendas y accesorios.</p>
+    <div class="perk rv"><span>⭐</span>1 punto por cada $1 en tus pedidos</div>
+    <div class="perk rv"><span>🎁</span>Accesorio de regalo en tu cumpleaños</div>
+    <div class="perk rv"><span>💌</span>Acceso anticipado a nuevas colecciones</div>
+    <a class="btn dark rv" id="joinBtn" target="_blank" rel="noopener" href="#">Unirme al Club</a>
+  </div>
+</section>
+
+<section class="rev-sec" id="resenas">
+  <div class="rev-in">
+    <div class="sec-head rv"><h2>Lo que dicen nuestras clientas</h2></div>
+    <div class="revs">
+      <article class="rev rv"><div class="stars">★★★★★</div><p>"El vestido llegó igualito a la foto y la tela es hermosa. Pedir por WhatsApp fue rapidísimo."</p><div class="who"><b>Camila R.</b><span>Clienta LUMÉ</span></div></article>
+      <article class="rev rv"><div class="stars">★★★★★</div><p>"Me encantó la cartera, combina con todo. Ya estoy pensando en el siguiente pedido."</p><div class="who"><b>Valentina M.</b><span>Clienta LUMÉ</span></div></article>
+      <article class="rev rv"><div class="stars">★★★★★</div><p>"Atención súper amable y los precios están muy bien. Los accesorios se ven mucho más caros de lo que cuestan."</p><div class="who"><b>Daniela P.</b><span>Clienta LUMÉ</span></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="banner" id="banner">
+  <div class="ban-txt rv"><p class="eyebrow">Nueva temporada</p><h2>Looks de temporada</h2><a class="btn dark" href="#catalogo">Ver productos</a></div>
+</section>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div class="f-brand"><img src="logo.png" alt="LUMÉ"><p>Moda de mujer con estilo. Elige tus prendas, arma tu pedido y ciérralo por WhatsApp.</p></div>
+    <div class="f-col"><h4>Explorar</h4><a href="#catalogo">Catálogo</a><a href="#look">Completa tu look</a><a href="#ofertas">Ofertas</a><a href="#club">LUMÉ Club</a></div>
+    <div class="f-col"><h4>Contacto</h4><a id="fWa" target="_blank" rel="noopener" href="#">WhatsApp</a><a href="mailto:adriangca228@gmail.com">adriangca228@gmail.com</a></div>
+  </div>
+  <div class="f-bottom"><span>© 2026 LUMÉ. Todos los derechos reservados.</span><span>Diseño web por <b>Adrian Design</b> · <a href="mailto:adriangca228@gmail.com">adriangca228@gmail.com</a></span></div>
+</footer>
+
+<a class="wa-float" id="waFloat" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+
+<!-- Detalle de prenda -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="sheet" id="sheet">
+    <button class="close" id="mClose" aria-label="Cerrar">✕</button>
+    <div class="m-img" id="mImg"></div>
+    <div class="m-info">
+      <p class="eyebrow" id="mCat"></p>
+      <h3 id="mName"></h3>
+      <p class="m-price" id="mPrice"></p>
+      <p class="m-desc" id="mDesc"></p>
+      <p class="lbl">Talla</p><div class="sizes" id="mSizes"></div>
+      <div class="m-actions">
+        <div class="qty"><button id="qm">−</button><span id="qv">1</span><button id="qp">+</button></div>
+        <button class="btn dark" id="mAdd">Agregar al carrito</button>
+      </div>
+      <button class="link" id="mWa">Pedir solo esta prenda por WhatsApp →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Carrito -->
+<div class="drawer-bg" id="dBg"><aside class="drawer">
+  <button class="close" id="dClose" aria-label="Cerrar">✕</button>
+  <h3>Tu pedido</h3><div id="items"></div><p class="total" id="total"></p>
+  <input id="nm" placeholder="Tu nombre"><textarea id="nt" rows="2" placeholder="Dirección o nota (opcional)"></textarea>
+  <button class="btn wa" id="send">Enviar pedido por WhatsApp</button>
+</aside></div>
+<script>
+// ====== CONFIG ======
+const PHONE = "15551234567"; // número del negocio con código de país, sin +
+// Hero: cambia "img" por tus imágenes (ej. "img/hero1.jpg"). "grad" es el fondo mientras no hay imagen.
+const HERO = [
+  {eye:"Nueva colección 2026", tit:"Vestidos que cuentan tu estilo", img:"LUME_ Looks que inspiran (1).png", grad:"linear-gradient(135deg,#c9a58f,#7a4b3a)"},
+  {eye:"Accesorios", tit:"El detalle que completa tu look", img:"Elegancia dorada con bolso LUME.png", grad:"linear-gradient(135deg,#a9b19a,#4d5a46)", cat:"Accesorios", btn:"Ver accesorios"},
+  {eye:"Ofertas de temporada", tit:"Hasta 25% en looks seleccionados", img:"LUME_ Looks que inspiran.png", grad:"linear-gradient(135deg,#d8c3a5,#8a6a4f)"}
+];
+// Productos: "img" = nombre(s) de la foto SIN extension (puedes poner varios por si acaso). Si no existe el archivo, se muestra el emoji.
+const P = [
+  {n:"Vestido floral midi",c:"Vestidos",p:29.9,o:39.9,e:"👗",img:["vestido flora midi", "vestido floral midi"],t:"Nuevo",d:"Vestido midi de tela ligera con estampado floral, cintura marcada y caída suave."},
+  {n:"Vestido negro satinado",c:"Vestidos",p:34.5,e:"🖤",img:["vestido negro", "vestido negro satinado"],d:"Satén con brillo sutil, tirantes finos y corte en A. Ideal para noche."},
+  {n:"Blusa crop con lazo",c:"Blusas",p:16.9,o:22,e:"🎀",img:["Blusa crop con lazo", "blusa crop"],t:"-25%",d:"Blusa corta con lazo al frente, manga globo y tela fresca."},
+  {n:"Blusa blanca oversize",c:"Blusas",p:19.5,e:"🤍",img:["Blusa blanca oversize", "blusa blanca"],d:"Algodón suave, corte amplio y cuello camisero. Combina con todo."},
+  {n:"Jeans wide leg",c:"Pantalones",p:32,e:"👖",img:["Jeans wide leg", "jeans"],t:"Top",d:"Jeans de tiro alto y pierna ancha, denim cómodo de lavado medio."},
+  {n:"Pantalón cargo beige",c:"Pantalones",p:27.5,e:"🌾",img:["Pantalón cargo beige", "pantalon cargo beige", "pantalon cargo"],d:"Cargo relajado con bolsillos laterales y cintura ajustable."},
+  {n:"Falda plisada",c:"Faldas",p:21.9,o:28,e:"🌸",img:["falda plisada"],t:"-20%",d:"Falda midi plisada con movimiento y cintura elástica."},
+  {n:"Mini falda denim",c:"Faldas",p:18.5,e:"💙",img:["mini falda", "Mini falda denim"],d:"Mini de denim con botones al frente y ajuste cómodo."},
+  {n:"Conjunto deportivo",c:"Sets",p:38,e:"🏃‍♀️",img:["conjunto deportivo"],t:"Nuevo",d:"Top y legging de tela elástica que no transparenta."},
+  {n:"Set lino 2 piezas",c:"Sets",p:44.9,o:55,e:"🌿",img:["Set lino 2 piezas"],d:"Camisa y pantalón de lino fresco, perfectos para clima cálido."},
+  {n:"Chaqueta bomber",c:"Abrigos",p:42,e:"🧥",img:["chaqueta bomber"],d:"Bomber ligera con cierre, puños elásticos y forro interior."},
+  {n:"Blazer oversize",c:"Abrigos",p:48.5,e:"🖤",img:["Blazer oversize"],t:"Top",d:"Blazer estructurado de hombros marcados, look elegante y moderno."},
+  {n:"Cartera bandolera negra",c:"Accesorios",p:24.9,e:"👜",img:["Cartera bandolera negra"],u:1,t:"Top",d:"Cartera bandolera de cuero sintético con correa ajustable y cierre magnético. Un básico para todos los días."},
+  {n:"Tote bag beige",c:"Accesorios",p:29.5,o:36,e:"🛍",img:["Tote bag beige"],u:1,t:"-18%",d:"Tote amplio con asas reforzadas y bolsillo interior. Cabe laptop, libros y todo lo que necesites."},
+  {n:"Mini cartera con cadena",c:"Accesorios",p:21.9,e:"👛",img:["Mini cartera con cadena"],u:1,t:"Nuevo",d:"Mini cartera con cadena dorada, ideal para salir de noche o complementar un look básico."},
+  {n:"Pulsera dorada eslabones",c:"Pulseras",p:14.9,e:"📿",img:["pulsera dorada", "Pulsera dorada eslabones"],u:1,t:"Top",d:"Pulsera de eslabones con baño dorado, ajustable y resistente al uso diario."},
+  {n:"Set 3 pulseras finas",c:"Pulseras",p:12.5,o:18,e:"✨",img:["set cadenas", "Set 3 pulseras finas"],u:1,t:"-30%",d:"Tres pulseras delgadas para combinar o usar por separado."},
+  {n:"Reloj minimalista rosé",c:"Relojes",p:39.9,e:"⌚",img:["Reloj minimalista rosé", "Reloj minimalista rose"],u:1,t:"Top",d:"Reloj de esfera fina con correa de malla y acabado rosé. Elegante y ligero."},
+  {n:"Reloj cuadrado vintage",c:"Relojes",p:34.5,e:"⌚",img:["Reloj cuadrado vintage"],u:1,d:"Caja cuadrada de inspiración retro con correa de cuero sintético."},
+  {n:"Aretes aro dorado",c:"Aretes",p:9.9,e:"💎",img:["Aretes aro dorado"],u:1,d:"Aros medianos livianos con acabado dorado pulido."},
+  {n:"Aretes perla",c:"Aretes",p:11.9,e:"🤍",img:["Aretes perla"],u:1,t:"Nuevo",d:"Perlas cultivadas sintéticas con cierre seguro, un clásico para cualquier ocasión."},
+  {n:"Set 5 pares de aretes",c:"Aretes",p:15,o:22,e:"💎",img:["Set 5 pares de aretes"],u:1,t:"-30%",d:"Cinco pares en distintos estilos para renovar tu colección."}
+];
+const IMG_DIR = "";   // las fotos de producto estan en la misma carpeta que index.html (si las mueves a una carpeta, pon "img/")
+const IMG_EXTS = [".jpg", ".jfif", ".jpeg", ".png", ".webp"];   // prueba estas extensiones en orden
+const SIZES = ["XS","S","M","L"];
+// ====== HELPERS ======
+const $ = id => document.getElementById(id);
+const money = n => "$" + n.toFixed(2);
+function loadImg(p, cls, ok) {
+  const list = [];
+  [...new Set([].concat(p.img || []).flatMap(b => [b, b.toLowerCase()]))].forEach(b => IMG_EXTS.forEach(x => list.push(IMG_DIR + b + x)));
+  if (!list.length) return null;
+  const im = new Image(); im.alt = p.n; if (cls) im.className = cls; let k = 0;
+  im.onerror = () => { if (++k < list.length) im.src = list[k]; else im.remove(); };
+  if (ok) im.onload = () => ok(im);
+  im.src = list[0];
+  return im;
+}
+const bg = (el, img, grad) => el.style.backgroundImage = img ? `url("${img}"), ${grad}` : grad;
+const tone = i => `linear-gradient(160deg,hsl(36 8% ${91-(i%3)*2}%),hsl(36 6% ${80-(i%3)*2}%))`;
+// ====== HERO ======
+let hi = 0, timer;
+HERO.forEach((h, i) => {
+  const s = document.createElement("div"); s.className = "slide";
+  s.innerHTML = '<div class="bg"></div>'; bg(s.firstChild, h.img, h.grad);
+  $("slides").appendChild(s);
+  const d = document.createElement("button"); d.innerHTML = "<i></i>"; d.onclick = () => go(i);
+  $("dots").appendChild(d);
+});
+function go(i) {
+  hi = i;
+  [...$("slides").children].forEach((s, k) => s.classList.toggle("on", k === i));
+  [...$("dots").children].forEach((d, k) => { d.classList.remove("on"); void d.offsetWidth; d.classList.toggle("on", k === i); });
+  const t = $("hTit"), e = $("hEye");
+  [e, t].forEach(x => { x.style.animation = "none"; void x.offsetWidth; x.style.animation = ""; });
+  e.textContent = HERO[i].eye; t.textContent = HERO[i].tit;
+  $("hBtn").textContent = HERO[i].btn || "Ver colección";
+  $("hBtn").onclick = () => { cat = HERO[i].cat || "Todas"; chips(); draw(); };
+  clearTimeout(timer); timer = setTimeout(() => go((i + 1) % HERO.length), 5000);
+}
+go(0);
+// ====== EXTRAS ======
+const ACC = ["Accesorios", "Pulseras", "Relojes", "Aretes"];
+const inCat = p => cat === "Todas" || p.c === cat || (cat === "Accesorios" && ACC.includes(p.c));
+function goCat(c) { cat = c; chips(); draw(); $("catalogo").scrollIntoView({behavior: "smooth"}); }
+document.querySelectorAll(".tile").forEach(t => {
+  t.onclick = () => goCat(t.dataset.c);
+  const im = loadImg({img: t.dataset.img, n: t.querySelector("b").textContent}, "timg", () => t.classList.add("has"));
+  if (im) t.prepend(im);
+});
+$("promoBtn").onclick = e => { e.preventDefault(); goCat("Accesorios"); };
+$("waFloat").href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent("Hola, quiero más información sobre LUMÉ");
+function tick() {
+  const n = new Date(), end = new Date(n.getFullYear(), n.getMonth() + 1, 1);
+  let r = Math.max(0, end - n);
+  $("cd").innerHTML = [["días", 864e5], ["hrs", 36e5], ["min", 6e4], ["seg", 1e3]].map(([l, ms]) => { const v = Math.floor(r / ms); r -= v * ms; return `<div><b>${String(v).padStart(2, "0")}</b><small>${l}</small></div>`; }).join("");
+}
+tick(); setInterval(tick, 1000);
+$("fWa").href = $("waFloat").href;
+// Marcas: ajusta cada logo a su tamano real, duplica para el carrusel infinito y carga el banner
+{
+  const bt = $("bt");
+  bt.querySelectorAll("svg").forEach(s => {
+    const b = s.querySelector("path").getBBox(); if (!b.width || !b.height) return;
+    s.setAttribute("viewBox", `${b.x} ${b.y} ${b.width} ${b.height}`);
+    const r = b.width / b.height, hh = r > 3 ? 20 : r > 1.6 ? 26 : 34;
+    s.style.height = hh + "px"; s.style.width = (hh * r) + "px";
+  });
+  bt.insertAdjacentHTML("beforeend", bt.innerHTML.replace(/<span class="bl"/g, '<span aria-hidden="true" class="bl"'));
+  let bx = 0, bl = performance.now(), bp = false;
+  const SPEED = 55; // pixeles por segundo (sube o baja para ir mas rapido o lento)
+  const bw = bt.parentElement;
+  bw.onmouseenter = () => bp = true; bw.onmouseleave = () => bp = false;
+  bw.addEventListener("touchstart", () => bp = true, {passive: true}); bw.addEventListener("touchend", () => bp = false);
+  (function stepB(t) {
+    const dt = Math.min((t - bl) / 1000, .1); bl = t;
+    if (!bp) { bx -= SPEED * dt; const half = bt.scrollWidth / 2; if (-bx >= half) bx += half; bt.style.transform = `translateX(${bx}px)`; }
+    requestAnimationFrame(stepB);
+  })(bl);
+  const bi = loadImg({img: ["bannerr"], n: "LUMÉ"}, "ban-img"); if (bi) $("banner").prepend(bi);
+}
+// Club: tarjeta que gira + inclinacion con el mouse
+{
+  const cc = $("cc"), ci = $("ci");
+  const flip = () => ci.classList.toggle("flip");
+  cc.onclick = flip; cc.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } };
+  cc.onmousemove = e => { const r = cc.getBoundingClientRect(); cc.style.setProperty("--ry", ((e.clientX - r.left) / r.width - .5) * 14 + "deg"); cc.style.setProperty("--rx", -((e.clientY - r.top) / r.height - .5) * 14 + "deg"); };
+  cc.onmouseleave = () => { cc.style.setProperty("--rx", "0deg"); cc.style.setProperty("--ry", "0deg"); };
+  $("joinBtn").href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent("Hola, quiero unirme al LUMÉ Club");
+  const io2 = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io2.unobserve(e.target); } }), {threshold: .15});
+  document.querySelectorAll(".rv").forEach((el, k) => { el.style.transitionDelay = (k % 4) * 90 + "ms"; io2.observe(el); });
+}
+addEventListener("scroll", () => $("top").classList.toggle("solid", scrollY > 40), {passive: true});
+// ====== CATÁLOGO ======
+let cat = "Todas";
+const cats = ["Todas", ...new Set(P.map(p => p.c).filter(c => !ACC.includes(c))), ...ACC];
+function chips() {
+  $("chips").innerHTML = cats.map(c => `<button class="chip ${c === cat ? "on" : ""}" data-c="${c}">${c}</button>`).join("");
+  $("chips").querySelectorAll("button").forEach(b => b.onclick = () => { cat = b.dataset.c; chips(); draw(); });
+}
+function draw() {
+  const q = $("q").value.toLowerCase();
+  $("grid").innerHTML = "";
+  P.forEach((p, i) => {
+    if (!inCat(p) || !p.n.toLowerCase().includes(q)) return;
+    const c = document.createElement("div"); c.className = "card";
+    c.innerHTML = `<div class="c-img" style="background:${tone(i)}">${p.e}${p.t ? `<em>${p.t}</em>` : ""}<div class="view">Ver prenda →</div></div><div class="c-info"><div><b>${p.n}</b><br><span>${p.c}</span></div><b>${money(p.p)}</b></div>`;
+    { const im = loadImg(p, "fill"); if (im) c.querySelector(".c-img").prepend(im); }
+    c.tabIndex = 0; c.setAttribute("role", "button");
+    c.onclick = () => { document.querySelectorAll(".card.sel").forEach(x => x.classList.remove("sel")); c.classList.add("sel"); openModal(i); };
+    c.onkeydown = e => { if (e.key === "Enter") c.click(); };
+    $("grid").appendChild(c);
+  });
+  const io = new IntersectionObserver((es) => es.forEach((e, k) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add("in"), k * 70); io.unobserve(e.target); } }), {threshold: .1});
+  document.querySelectorAll(".card").forEach(c => io.observe(c));
+}
+$("q").oninput = draw;
+document.querySelector('[data-f="Nuevo"]').onclick = () => { $("q").value = ""; cat = "Todas"; chips(); draw(); };
+chips(); draw();
+// ====== DETALLE ======
+let cur = 0, size = "M", qty = 1;
+function openModal(i) {
+  const p = P[i]; cur = i; size = p.u ? "Única" : "M"; qty = 1;
+  $("mImg").style.background = tone(i);
+  $("mImg").textContent = p.e; { const mi = loadImg(p); if (mi) $("mImg").appendChild(mi); }
+  $("mCat").textContent = p.c; $("mName").textContent = p.n; $("mDesc").textContent = p.d;
+  $("mPrice").innerHTML = money(p.p) + (p.o ? `<s>${money(p.o)}</s>` : "");
+  $("qv").textContent = 1; drawSizes();
+  $("modal").classList.add("open"); $("modal").setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+function closeModal() { $("modal").classList.remove("open"); document.body.style.overflow = ""; document.querySelectorAll(".card.sel").forEach(x => x.classList.remove("sel")); }
+function drawSizes() {
+  $("mSizes").innerHTML = (P[cur].u ? ["Única"] : SIZES).map(s => `<button class="${s === size ? "on" : ""}">${s}</button>`).join("");
+  $("mSizes").querySelectorAll("button").forEach((b, k) => b.onclick = () => { size = (P[cur].u ? ["Única"] : SIZES)[k]; drawSizes(); });
+}
+$("qm").onclick = () => { qty = Math.max(1, qty - 1); $("qv").textContent = qty; };
+$("qp").onclick = () => { qty++; $("qv").textContent = qty; };
+$("mClose").onclick = closeModal;
+$("modal").onclick = e => { if (e.target === $("modal")) closeModal(); };
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closeCart(); } });
+$("mAdd").onclick = () => { const k = cur + "|" + size; cart[k] = (cart[k] || 0) + qty; upd(); closeModal(); openCart(); };
+$("mWa").onclick = () => { const p = P[cur]; wa([`• ${qty} x ${p.n} (talla ${size}) — ${money(p.p * qty)}`], p.p * qty); };
+// ====== CARRITO ======
+const cart = {};
+const total = () => Object.keys(cart).reduce((s, k) => s + P[k.split("|")[0]].p * cart[k], 0);
+function upd() {
+  $("cartN").textContent = Object.values(cart).reduce((a, b) => a + b, 0);
+  $("items").innerHTML = Object.keys(cart).map(k => { const [i, s] = k.split("|"), p = P[i];
+    return `<div class="row"><span>${p.n} (${s})</span><button data-k="${k}" data-d="-1">−</button>${cart[k]}<button data-k="${k}" data-d="1">+</button></div>`; }).join("") || "<p>Tu carrito está vacío.</p>";
+  $("items").querySelectorAll("button").forEach(b => b.onclick = () => { cart[b.dataset.k] += +b.dataset.d; if (cart[b.dataset.k] <= 0) delete cart[b.dataset.k]; upd(); });
+  $("total").textContent = "Total: " + money(total());
+}
+function openCart() { $("dBg").classList.add("open"); }
+function closeCart() { $("dBg").classList.remove("open"); }
+$("cartBtn").onclick = openCart; $("dClose").onclick = closeCart;
+$("dBg").onclick = e => { if (e.target === $("dBg")) closeCart(); };
+function wa(lines, tot) {
+  const l = ["Hola, quiero hacer un pedido en LUMÉ:", ...lines, "Total: " + money(tot)];
+  if ($("nm").value) l.push("Nombre: " + $("nm").value);
+  if ($("nt").value) l.push("Nota: " + $("nt").value);
+  window.open("https://wa.me/" + PHONE + "?text=" + encodeURIComponent(l.join("\n")), "_blank");
+}
+$("send").onclick = () => { if (!Object.keys(cart).length) return;
+  wa(Object.keys(cart).map(k => { const [i, s] = k.split("|"), p = P[i]; return `• ${cart[k]} x ${p.n} (talla ${s}) — ${money(p.p * cart[k])}`; }), total()); };
+upd();
+
+</script>
+</body>
+</html>
